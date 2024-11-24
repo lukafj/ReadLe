@@ -1,5 +1,5 @@
 
-package com.example.readle
+package com.example.readle.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,11 +22,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.readle.ReadLeScreen
 import com.example.readle.ui.theme.Beige02
 import com.example.readle.ui.theme.Green01
 
+
 @Composable
-fun Home(values: PaddingValues, ) {
+fun HomeScreen(
+    values: PaddingValues,
+    //viewModel: ReadLeViewModel = viewModel(),
+    //navController: NavController
+) {
     val focusManager = LocalFocusManager.current
 
     //Display with books itself

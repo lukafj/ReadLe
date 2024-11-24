@@ -1,4 +1,4 @@
-package com.example.readle.ui.theme
+package com.example.readle.ui
 
 class ReadLeViewModel {
     //ViewModel

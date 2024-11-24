@@ -2,27 +2,25 @@
 
 package com.example.readle
 
-import android.content.res.Resources.Theme
-import android.graphics.drawable.Icon
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,67 +33,56 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.example.readle.ui.HomeScreen
 import com.example.readle.ui.theme.ReadLeTheme
-import kotlinx.coroutines.launch
+import com.example.readle.ui.Logger
+import com.example.readle.ui.MenuItems
+import com.example.readle.ui.SearchBar
 import com.example.readle.ui.theme.Beige01
 import com.example.readle.ui.theme.Beige02
 import com.example.readle.ui.theme.Green01
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        Logger().info("MainActivity", "onCreate()")
         super.onCreate(savedInstanceState)
+        createNotificationChannel()
         enableEdgeToEdge()
         setContent {
             ReadLeTheme(
                 darkTheme = false
             ) {
-                val items = listOf(
-                    NavigationItem(
-                        title = "Home",
-                        unselectedIcon = Icons.Outlined.Home,
-                        selectedIcon = Icons.Filled.Home
-                    ),
-                    NavigationItem(
-                        title = "Favourite",
-                        unselectedIcon = Icons.Outlined.Star,
-                        selectedIcon = Icons.Filled.Star
-                    ),
-                    NavigationItem(
-                        title = "Your books",
-                        unselectedIcon = Icons.Outlined.CheckCircle,
-                        selectedIcon = Icons.Filled.CheckCircle
-                    ),
-                    NavigationItem(
-                        title = "Account",
-                        unselectedIcon = Icons.Outlined.Person,
-                        selectedIcon = Icons.Filled.Person
-                    )
-                )
+                //ReadLeApp()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = Beige01
-                    //color = MaterialTheme.colorScheme.background
                 ) {
                     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
                     var selectedItemIndex by rememberSaveable {
                         mutableStateOf(0)
                     }
+                    var searchQuery by rememberSaveable { mutableStateOf("") }  //search query state
+                    val items = MenuItems().items
 
                     ModalNavigationDrawer(
                         drawerContent = {
-                            ModalDrawerSheet {
+                            ModalDrawerSheet (
+                                drawerContainerColor = Beige01
+                            ) {
                                 Spacer(modifier = Modifier.height(16.dp))
                                 items.forEachIndexed { index, item ->
                                     NavigationDrawerItem(
@@ -117,25 +104,33 @@ class MainActivity : ComponentActivity() {
                                                 contentDescription = item.title
                                             )
                                         },
-                                        //show badge if its not null
-                                        badge = {
-                                            item.badgeCount?.let {
-                                                Text(text = item.badgeCount.toString())
-                                            }
-                                        },
                                         modifier = Modifier
-                                            .padding(NavigationDrawerItemDefaults.ItemPadding)
+                                            .padding(NavigationDrawerItemDefaults.ItemPadding),
+                                        colors = NavigationDrawerItemDefaults.colors(
+                                            unselectedContainerColor = Beige01,
+                                            selectedContainerColor = Green01,
+                                            selectedTextColor = Beige02,
+                                            selectedIconColor = Beige02
+                                        )
                                     )
                                 }
                             }
                         },
-                        drawerState = drawerState
+                        drawerState = drawerState,
                     ) {
                         Scaffold(
                             topBar = {
                                 TopAppBar(
                                     title = {
-                                        Text(text = "ReadLe")
+                                        SearchBar(
+                                            query = searchQuery,
+                                            onQueryChange = { query ->
+                                                searchQuery = query
+                                                //search
+                                                /*TODO*/
+                                            },
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
                                     },
                                     navigationIcon = {
                                         IconButton(onClick = {
@@ -152,23 +147,118 @@ class MainActivity : ComponentActivity() {
                                     colors = TopAppBarDefaults.topAppBarColors(
                                         containerColor = Green01,
                                         titleContentColor = Beige01
+                                    ),
+
                                     )
-                                )
                             },
-                            containerColor = Beige02
+                            containerColor = Beige01
                         ) { values ->
-                            LazyColumn(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(values)
+                            /*
+                            NavHost(
+                                navController = navController,
+                                startDestination = ReadLeScreen.Home.name
                             ) {
-                                //display books here
+                                composable(route = ReadLeScreen.Home.name) {
+                                    //HomeScreen(values = values, navController = navController)
+                                    HomeScreen(values = values, viewModel = viewModel, navController = navController)
+                                }
+                                composable(route = ReadLeScreen.Favourite.name) {
+                                    //FavouriteScreen(values = values, navController = navController)
+                                    FavouriteScreen(values = values, viewModel = viewModel, navController = navController)
+                                }
+                                //add YourBooks and Account Screens
                             }
+                            */
+                            HomeScreen(values = values)
                         }
                     }
                 }
             }
         }
     }
+
+
+
+    override fun onRestart() {
+        super.onRestart()
+        Logger().info("MainActivity", "onRestart()")
+    }
+    override fun onStart() {
+        super.onStart()
+        Logger().info("MainActivity", "onStart()")
+
+    }
+    override fun onResume() {
+        super.onResume()
+        Logger().info("MainActivity", "onResume()")
+    }
+    override fun onPause() {
+        super.onPause()
+        Logger().info("MainActivity", "onPause()")
+        sendPushNotification("Taking a break?", "Currently reading <book_name>")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Logger().info("MainActivity", "onStop()")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Logger().info("MainActivity", "onDestroy()")
+    }
+
+
+
+
+    private val CHANNEL_ID = "close_app_notification"
+    private val NOTIFICATION_ID = 1
+
+    private fun sendPushNotification(title: String, description: String) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            this, 0, intent, PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.icon)
+            .setContentTitle(title)
+            .setContentText(description)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        with(NotificationManagerCompat.from(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 0)
+            }
+            if (ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                notify(NOTIFICATION_ID, notification)
+                return
+            }
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Taking a break?"
+            val descriptionText = "Currently reading <book_name>"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
 }
+
+
+
+
 

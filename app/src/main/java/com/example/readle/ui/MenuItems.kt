@@ -1,4 +1,4 @@
-package com.example.readle.ui.theme
+package com.example.readle.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -9,7 +9,9 @@ import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Star
-import com.example.readle.NavigationItem
+import androidx.navigation.NavDestination
+import androidx.navigation.Navigator
+import com.example.readle.ReadLeScreen
 
 data class MenuItems(
     val items: List<NavigationItem> = listOf(

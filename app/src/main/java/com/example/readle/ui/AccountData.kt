@@ -1,4 +1,4 @@
-package com.example.readle
+package com.example.readle.ui
 
 data class AccountData(
     val id: Int,

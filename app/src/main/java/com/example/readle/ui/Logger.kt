@@ -1,4 +1,4 @@
-package com.example.readle
+package com.example.readle.ui
 
 import android.util.Log
 

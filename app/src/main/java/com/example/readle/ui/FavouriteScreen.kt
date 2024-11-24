@@ -1,4 +1,5 @@
 package com.example.readle
 
-class Favourite {
+fun Favourite() {
+
 }

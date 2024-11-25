@@ -10,24 +10,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-
+import com.example.readle.ui.theme.Beige02
 
 
 @Composable
 fun FavouriteScreen(
     values: PaddingValues,
-    //viewModel: ReadLeViewModel = viewModel(),
-    //navController: NavController
+    viewModel: ReadLeViewModel = viewModel(),
+    navController: NavController
 ) {
     Column(
         modifier = Modifier
-            .padding(values)
             .fillMaxSize()
+            .padding(values)
     ) {
         Text(
             text = "Your books",
             modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
+                .align(alignment = Alignment.CenterHorizontally),
+            color = Beige02
         )
     }
 

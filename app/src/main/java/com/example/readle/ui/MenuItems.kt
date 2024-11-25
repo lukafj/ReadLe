@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Star
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigator
+import com.example.readle.NavigationItem
 import com.example.readle.ReadLeScreen
 
 data class MenuItems(
@@ -18,22 +19,26 @@ data class MenuItems(
         NavigationItem(
             title = "Home",
             unselectedIcon = Icons.Outlined.Home,
-            selectedIcon = Icons.Filled.Home
+            selectedIcon = Icons.Filled.Home,
+            destination = ReadLeScreen.Home.name
         ),
         NavigationItem(
             title = "Favourite",
             unselectedIcon = Icons.Outlined.Star,
-            selectedIcon = Icons.Filled.Star
+            selectedIcon = Icons.Filled.Star,
+            destination = ReadLeScreen.Favourite.name
         ),
         NavigationItem(
             title = "Your books",
             unselectedIcon = Icons.Outlined.CheckCircle,
-            selectedIcon = Icons.Filled.CheckCircle
+            selectedIcon = Icons.Filled.CheckCircle,
+            destination = ReadLeScreen.Account.name
         ),
         NavigationItem(
             title = "Account",
             unselectedIcon = Icons.Outlined.Person,
-            selectedIcon = Icons.Filled.Person
+            selectedIcon = Icons.Filled.Person,
+            destination = ReadLeScreen.YourBooks.name
         )
     )
 

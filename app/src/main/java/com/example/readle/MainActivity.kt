@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavHost
+import com.example.readle.ui.FavouriteScreen
 import com.example.readle.ui.HomeScreen
 import com.example.readle.ui.theme.ReadLeTheme
 import com.example.readle.ui.Logger
@@ -65,114 +67,7 @@ class MainActivity : ComponentActivity() {
             ReadLeTheme(
                 darkTheme = false
             ) {
-                //ReadLeApp()
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = Beige01
-                ) {
-                    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-                    val scope = rememberCoroutineScope()
-                    var selectedItemIndex by rememberSaveable {
-                        mutableStateOf(0)
-                    }
-                    var searchQuery by rememberSaveable { mutableStateOf("") }  //search query state
-                    val items = MenuItems().items
-
-                    ModalNavigationDrawer(
-                        drawerContent = {
-                            ModalDrawerSheet (
-                                drawerContainerColor = Beige01
-                            ) {
-                                Spacer(modifier = Modifier.height(16.dp))
-                                items.forEachIndexed { index, item ->
-                                    NavigationDrawerItem(
-                                        label = {
-                                            Text(text = item.title)
-                                        },
-                                        selected = index == selectedItemIndex,
-                                        onClick = {
-                                            selectedItemIndex = index
-                                            scope.launch {
-                                                drawerState.close()
-                                            }
-                                        },
-                                        icon = {
-                                            Icon(
-                                                imageVector = if (index == selectedItemIndex) {
-                                                    item.selectedIcon
-                                                } else item.unselectedIcon,
-                                                contentDescription = item.title
-                                            )
-                                        },
-                                        modifier = Modifier
-                                            .padding(NavigationDrawerItemDefaults.ItemPadding),
-                                        colors = NavigationDrawerItemDefaults.colors(
-                                            unselectedContainerColor = Beige01,
-                                            selectedContainerColor = Green01,
-                                            selectedTextColor = Beige02,
-                                            selectedIconColor = Beige02
-                                        )
-                                    )
-                                }
-                            }
-                        },
-                        drawerState = drawerState,
-                    ) {
-                        Scaffold(
-                            topBar = {
-                                TopAppBar(
-                                    title = {
-                                        SearchBar(
-                                            query = searchQuery,
-                                            onQueryChange = { query ->
-                                                searchQuery = query
-                                                //search
-                                                /*TODO*/
-                                            },
-                                            modifier = Modifier.fillMaxWidth()
-                                        )
-                                    },
-                                    navigationIcon = {
-                                        IconButton(onClick = {
-                                            scope.launch {
-                                                drawerState.open()
-                                            }
-                                        }) {
-                                            Icon(
-                                                imageVector = Icons.Default.Menu,
-                                                contentDescription = "Menu"
-                                            )
-                                        }
-                                    },
-                                    colors = TopAppBarDefaults.topAppBarColors(
-                                        containerColor = Green01,
-                                        titleContentColor = Beige01
-                                    ),
-
-                                    )
-                            },
-                            containerColor = Beige01
-                        ) { values ->
-                            /*
-                            NavHost(
-                                navController = navController,
-                                startDestination = ReadLeScreen.Home.name
-                            ) {
-                                composable(route = ReadLeScreen.Home.name) {
-                                    //HomeScreen(values = values, navController = navController)
-                                    HomeScreen(values = values, viewModel = viewModel, navController = navController)
-                                }
-                                composable(route = ReadLeScreen.Favourite.name) {
-                                    //FavouriteScreen(values = values, navController = navController)
-                                    FavouriteScreen(values = values, viewModel = viewModel, navController = navController)
-                                }
-                                //add YourBooks and Account Screens
-                            }
-                            */
-                            HomeScreen(values = values)
-                        }
-                    }
-                }
+                ReadLeApp()
             }
         }
     }

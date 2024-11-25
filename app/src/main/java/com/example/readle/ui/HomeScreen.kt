@@ -58,7 +58,7 @@ fun HomeScreen(
     navController: NavController
 ) {
     val focusManager = LocalFocusManager.current
-    
+
     //Display with books itself
     Column(
         modifier = Modifier
@@ -98,41 +98,4 @@ fun HomeScreen(
             Text(text = "Books will be shown here", modifier = Modifier.align(alignment = Alignment.CenterVertically), color = Beige02)
         }
     }
-}
-
-
-@Composable
-fun SearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TextField(
-    value = query,
-    onValueChange = onQueryChange,
-    placeholder = { Text("Search") },
-    singleLine = true,
-    modifier = modifier
-    .height(52.dp)
-    .fillMaxWidth(),
-    colors = TextFieldDefaults.colors(
-    unfocusedContainerColor = Color.Transparent,
-    cursorColor = Color.Black,
-    unfocusedTextColor = Color.Black,
-    unfocusedPlaceholderColor = Color.Black,
-    focusedContainerColor = Beige02,
-    focusedIndicatorColor = Color.Transparent,
-    unfocusedIndicatorColor = Color.Transparent
-    ),
-    shape = RoundedCornerShape(16.dp),
-    leadingIcon = {
-    Icon(
-    imageVector = Icons.Default.Search,
-    contentDescription = "Search Icon",
-    tint = Color.Black
-    )
-},
-
-
-)
 }

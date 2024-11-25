@@ -15,7 +15,7 @@ import com.example.readle.ui.theme.Beige02
 
 
 @Composable
-fun FavouriteScreen(
+fun ReadBooksScreen(
     values: PaddingValues,
     viewModel: ReadLeViewModel = viewModel(),
     navController: NavController
@@ -26,12 +26,11 @@ fun FavouriteScreen(
             .padding(values)
     ) {
         Text(
-            text = "Your favourited books",
+            text = "Read Books",
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(16.dp),
             color = Beige02
         )
     }
-
 }

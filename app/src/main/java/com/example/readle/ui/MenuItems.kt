@@ -29,16 +29,16 @@ data class MenuItems(
             destination = ReadLeScreen.Favourite.name
         ),
         NavigationItem(
-            title = "Your books",
+            title = "Read books",
             unselectedIcon = Icons.Outlined.CheckCircle,
             selectedIcon = Icons.Filled.CheckCircle,
-            destination = ReadLeScreen.Account.name
+            destination = ReadLeScreen.ReadBooks.name
         ),
         NavigationItem(
             title = "Account",
             unselectedIcon = Icons.Outlined.Person,
             selectedIcon = Icons.Filled.Person,
-            destination = ReadLeScreen.YourBooks.name
+            destination = ReadLeScreen.Account.name
         )
     )
 

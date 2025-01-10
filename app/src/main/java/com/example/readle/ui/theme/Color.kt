@@ -8,5 +8,5 @@ val Pink80 = Color(0xFFEFB8C8)
 
 
 val Beige01 = Color(0xFFF3EFCC)
-val Beige02 = Color(0xFFC9C492)
+val Beige02 = Color(0xFFE8D9B9)
 val Green01 = Color(0xFF32502E)

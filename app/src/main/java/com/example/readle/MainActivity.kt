@@ -9,18 +9,19 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.readle.ui.LoginScreen
 import com.example.readle.ui.theme.ReadLeTheme
-import com.example.readle.ui.Logger
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        Logger().info("MainActivity", "onCreate()")
+        Log.i(MainActivity::class.java.simpleName, "onCreate()")
         super.onCreate(savedInstanceState)
         createNotificationChannel()
         enableEdgeToEdge()
@@ -37,31 +38,30 @@ class MainActivity : ComponentActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        Logger().info("MainActivity", "onRestart()")
+        Log.i(MainActivity::class.java.simpleName, "onRestart()")
     }
     override fun onStart() {
         super.onStart()
-        Logger().info("MainActivity", "onStart()")
-
+        Log.i(MainActivity::class.java.simpleName, "onStart()")
     }
     override fun onResume() {
         super.onResume()
-        Logger().info("MainActivity", "onResume()")
+        Log.i(MainActivity::class.java.simpleName, "onResume()")
     }
     override fun onPause() {
         super.onPause()
-        Logger().info("MainActivity", "onPause()")
+        Log.i(MainActivity::class.java.simpleName, "onPause()")
         sendPushNotification("Taking a break?", "Currently reading <book_name>")
     }
 
     override fun onStop() {
         super.onStop()
-        Logger().info("MainActivity", "onStop()")
+        Log.i(MainActivity::class.java.simpleName, "onStop()")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Logger().info("MainActivity", "onDestroy()")
+        Log.i(MainActivity::class.java.simpleName, "onDestroy()")
     }
 
 

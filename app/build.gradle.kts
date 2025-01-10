@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -37,6 +38,9 @@ android {
     buildFeatures {
         compose = true
     }
+    kotlinOptions {
+        freeCompilerArgs += "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+    }
 }
 
 dependencies {
@@ -60,4 +64,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
 
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.kotlinx.serialization.json)
 }

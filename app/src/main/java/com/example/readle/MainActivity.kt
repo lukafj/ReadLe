@@ -1,5 +1,6 @@
 package com.example.readle
 
+import ReadLeRepository
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,59 +10,74 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.lifecycle.ViewModelProvider
+import com.example.readle.data.ReadLeDatabase
+import com.example.readle.ui.LoginScreen
+import com.example.readle.ui.ReadLeViewModel
+import com.example.readle.ui.ReadLeViewModelFactory
 import com.example.readle.ui.theme.ReadLeTheme
-import com.example.readle.ui.Logger
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var viewModel: ReadLeViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        Logger().info("MainActivity", "onCreate()")
+        Log.i(MainActivity::class.java.simpleName, "onCreate()")
         super.onCreate(savedInstanceState)
         createNotificationChannel()
         enableEdgeToEdge()
+        val repository = (application as ReadLeApplication).repository.readLeRepository
+        val viewModelFactory = ReadLeViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ReadLeViewModel::class.java)
+
+        val database = ReadLeDatabase.getDatabase(this)
+        Log.i("Database", "Database instance: $database")
+
         setContent {
             ReadLeTheme(
                 darkTheme = false
             ) {
-                ReadLeApp()
+                setContent {
+                    ReadLeApp(viewModel = viewModel)
+                }
             }
         }
     }
 
 
-
     override fun onRestart() {
         super.onRestart()
-        Logger().info("MainActivity", "onRestart()")
+        Log.i(MainActivity::class.java.simpleName, "onRestart()")
     }
     override fun onStart() {
         super.onStart()
-        Logger().info("MainActivity", "onStart()")
-
+        Log.i(MainActivity::class.java.simpleName, "onStart()")
     }
     override fun onResume() {
         super.onResume()
-        Logger().info("MainActivity", "onResume()")
+        Log.i(MainActivity::class.java.simpleName, "onResume()")
     }
     override fun onPause() {
         super.onPause()
-        Logger().info("MainActivity", "onPause()")
+        Log.i(MainActivity::class.java.simpleName, "onPause()")
         sendPushNotification("Taking a break?", "Currently reading <book_name>")
     }
 
     override fun onStop() {
         super.onStop()
-        Logger().info("MainActivity", "onStop()")
+        Log.i(MainActivity::class.java.simpleName, "onStop()")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Logger().info("MainActivity", "onDestroy()")
+        Log.i(MainActivity::class.java.simpleName, "onDestroy()")
     }
 
 

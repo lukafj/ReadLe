@@ -27,17 +27,23 @@ data class Favorite(
     val isbn: String
 )
 
-@Entity(tableName = "book")
+@Entity(
+    tableName = "book",
+    foreignKeys = [
+        ForeignKey(entity = Author::class, parentColumns = ["author_id"], childColumns = ["author_id"])
+    ],
+)
 data class Book(
     @PrimaryKey val isbn: String,
     val title: String,
-    val author_id: Int,
+    val author_id: Int, // Foreign key column
     val description: String,
     val imageUrl: String,
     val publisher: String,
     val amazonLink: String,
     val rank: Int
 )
+
 
 @Entity(tableName = "author")
 data class Author(

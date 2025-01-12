@@ -8,8 +8,7 @@ import androidx.room.ForeignKey
 
 @Entity(tableName = "users")
 data class User(
-    @PrimaryKey(autoGenerate = true)
-    val user_id: Int,
+    @PrimaryKey(autoGenerate = true) val user_id: Int,
     val username: String,
     val password: String,
     val email: String
@@ -30,8 +29,7 @@ data class Favorite(
 
 @Entity(tableName = "book")
 data class Book(
-    @PrimaryKey
-    val isbn: String,
+    @PrimaryKey val isbn: String,
     val title: String,
     val author_id: Int,
     val description: String,
@@ -43,8 +41,7 @@ data class Book(
 
 @Entity(tableName = "author")
 data class Author(
-    @PrimaryKey(autoGenerate = true)
-    val author_id: Int,
+    @PrimaryKey(autoGenerate = true) val author_id: Int,
     val name: String,
     val surname: String,
     val birth_date: String

@@ -4,44 +4,45 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
 
     @Insert
-    suspend fun insertUser(user: User)
+    fun insertUser(user: User)
 
     @Query("SELECT * FROM users WHERE user_id = :userId")
-    suspend fun getUser(userId: Int): User?
+    fun getUser(userId: Int): Flow<User?>
 
     @Query("DELETE FROM users WHERE user_id = :userId")
-    suspend fun deleteUser(userId: Int)
+    fun deleteUser(userId: Int)
 
     @Query("SELECT * FROM users WHERE username = :username AND password = :password LIMIT 1")
-    suspend fun getUserByCredentials(username: String, password: String): User?
+    fun getUserByCredentials(username: String, password: String): Flow<User?>
 }
 
 @Dao
 interface FavoriteDao {
 
     @Insert
-    suspend fun insertFavorite(favorite: Favorite)
+     fun insertFavorite(favorite: Favorite)
 
     @Query("SELECT * FROM favorite WHERE user_id = :userId")
-    suspend fun getFavoritesByUserId(userId: Int): List<Favorite>
+     fun getFavoritesByUserId(userId: Int): Flow<List<Favorite>>
 }
 
 @Dao
 interface BookDao {
 
     @Insert
-    suspend fun insertBook(book: Book)
+    fun insertBook(book: Book)
 
     @Query("SELECT * FROM book WHERE isbn = :isbn")
-    suspend fun getBookByIsbn(isbn: String): Book?
+    fun getBookByIsbn(isbn: String): Book
 
     @Delete
-    suspend fun deleteBook(book: Book)
+    fun deleteBook(book: Book)
 }
 
 
@@ -49,8 +50,8 @@ interface BookDao {
 interface AuthorDao {
 
     @Insert
-    suspend fun insertAuthor(author: Author)
+    fun insertAuthor(author: Author)
 
     @Query("SELECT * FROM author WHERE author_id = :authorId")
-    suspend fun getAuthorById(authorId: Int): Author?
+    fun getAuthorById(authorId: Int): Flow<Author?>
 }

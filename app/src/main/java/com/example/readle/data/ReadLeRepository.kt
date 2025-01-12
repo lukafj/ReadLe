@@ -1,18 +1,15 @@
-import android.content.Context
-import androidx.room.Room
-import androidx.room.Room.databaseBuilder
 import com.example.readle.data.Book
-import com.example.readle.data.ReadLeDatabase
 import com.example.readle.data.User
+import kotlinx.coroutines.flow.Flow
 
 interface ReadLeRepository {
     suspend fun insertBook(book: Book)
     suspend fun deleteBook(book: Book)
-    suspend fun getBook(isbn: String) :Book
+    suspend fun getBook(isbn: String) : Flow<Book>
 
 
     suspend fun insertUser(user: User)
-    suspend fun deleteUser(id: Int)
-    suspend fun getUser(id: Int)
-    suspend fun authenticateUser(username: String, password: String): User?
+    suspend fun deleteUser(userId: Int)
+    suspend fun getUser(userId: Int) :Flow<User?>
+    suspend fun authenticateUser(username: String, password: String): Flow<User?>
 }

@@ -18,8 +18,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.readle.data.ReadLeDatabase
-import com.example.readle.ui.LoginScreen
 import com.example.readle.ui.ReadLeViewModel
 import com.example.readle.ui.ReadLeViewModelFactory
 import com.example.readle.ui.theme.ReadLeTheme
@@ -37,8 +35,6 @@ class MainActivity : ComponentActivity() {
         val viewModelFactory = ReadLeViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ReadLeViewModel::class.java)
 
-        val database = ReadLeDatabase.getDatabase(this)
-        Log.i("Database", "Database instance: $database")
 
         setContent {
             ReadLeTheme(
